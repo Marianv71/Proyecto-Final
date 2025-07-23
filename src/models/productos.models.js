@@ -2,7 +2,7 @@
 import { db } from "./bd-firebase.js";
 
 //Importo la colección y todos los documentos
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 
 //Importo los productos de la Collección
 const productosCollection = collection(db, "productos");
@@ -27,3 +27,16 @@ export const getAllProductos = async () => {
     }
 };
 
+export const getProductoByID = async (id) => {
+    try {
+        const docRef = doc(productosCollection, id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            return { id: docSnap.id, ...docSnap.data() };
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};

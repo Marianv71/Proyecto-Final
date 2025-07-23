@@ -7,5 +7,14 @@ export const getAllProductos = async (req, res) => {
     
     const productos = await Service.getAllProductos();
     res.json (productos);
+}; 
 
-}
+export const getProductoByID = async (req, res) => {
+    const { id } = req.params;
+    const producto = await Service.getProductoByID(id);
+    if (producto) {
+        res.json(producto);
+    } else {
+        res.status(404).json({ message: "Producto No encontrado"});
+    }
+};
