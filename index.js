@@ -1,5 +1,4 @@
-//Importo las variables de entorno
-import "dotenv/config";
+import "dotenv/config"; //Importo las variables de entorno
 import express from "express";
 const app = express();
 

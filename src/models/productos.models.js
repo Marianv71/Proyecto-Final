@@ -2,7 +2,7 @@
 import { db } from "./bd-firebase.js";
 
 //Importo la colección y todos los documentos
-import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, addDoc, setDoc, deleteDoc } from "firebase/firestore";
 
 //Importo los productos de la Collección
 const productosCollection = collection(db, "productos");
@@ -13,7 +13,7 @@ export const getAllProductos = () => {
 };
 */
 
-//Esta función devuelve todos los productos desde la BD
+//BÚSQUEDA - Esta función devuelve todos los productos desde la BD
 export const getAllProductos = async () => {
     try {
         const snapshot = await getDocs(productosCollection);
@@ -27,6 +27,7 @@ export const getAllProductos = async () => {
     }
 };
 
+//BÚSQUEDA - Esta función devuelve un producto específico, identificado por su ID
 export const getProductoByID = async (id) => {
     try {
         const docRef = doc(productosCollection, id);
@@ -38,5 +39,39 @@ export const getProductoByID = async (id) => {
         }
     } catch (error) {
         console.error(error);
+    }
+};
+
+//ALTA - Esta función me permite dar de alta un producto
+export const createProductos = async (newProducto) => {
+    try {
+        const docRef = await addDoc (productosCollection, newProducto);
+        return { id: docRef.id, ...newProducto };
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+//UPDATE - Esta función me permite actualizar un producto, ubicado por su ID
+export const updateProductos = async (id, updateProductoData) => {
+    try {
+        const docRef = doc(productosCollection, id);
+        await setDoc(docRef, updateProductoData,{ merge: true});
+        return { id, ...updateProductoData };
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};
+
+//DELETE - Esta función me permite eliminar un producto, ubicado por su ID
+export const deleteProductos = async (id) => {
+    try {
+        const docRef = doc(productosCollection, id);
+        await deleteDoc(docRef);
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
     }
 };

@@ -6,4 +6,6 @@ import { login } from "../controllers/auth.controller.js";
 
 router.post("/login", login);
 
+router
+
 export default router;
